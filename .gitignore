@@ -1,0 +1,11 @@
+cat > .gitignore << 'EOF'
+/target
+**/*.rs.bk
+Cargo.lock
+.idea
+.vscode
+*.swp
+*.swo
+*~
+.DS_Store
+EOF

@@ -1,0 +1,13 @@
+/home/yuki/Projetos/Messenger/torchat_paste/core/target/debug/deps/blanket-ac71e30bac7396fb.d: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/default.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/mod.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/arc.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/box.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/mut.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/rc.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/ref.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/utils.rs
+
+/home/yuki/Projetos/Messenger/torchat_paste/core/target/debug/deps/libblanket-ac71e30bac7396fb.so: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/default.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/mod.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/arc.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/box.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/mut.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/rc.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/ref.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/utils.rs
+
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/lib.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/default.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/mod.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/arc.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/box.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/mut.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/rc.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/derive/ref.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/blanket-0.3.0/src/utils.rs:
