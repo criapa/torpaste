@@ -14,13 +14,14 @@ use arti_client::{TorClient, TorClientConfig, DataStream};
 use arti_client::config::onion_service::OnionServiceConfigBuilder;
 use tor_rtcompat::PreferredRuntime;
 use tor_hsservice::RunningOnionService;
+use tor_cell::relaycell::msg::Connected;
 
 // Web Server Imports
 use axum::{Router, routing::get};
 use hyper::server::conn::Http;
 
-// Importamos a Struct Compat diretamente para instanciar manualmente
-use tokio_util::compat::Compat;
+// Importamos o trait para usar .compat()
+use tokio_util::compat::FuturesAsyncReadCompatExt;
 
 #[derive(Error, Debug)]
 pub enum TorError {
@@ -148,29 +149,40 @@ impl TorManager {
         tokio::spawn(async move {
             while let Some(stream_req) = request_stream.next().await {
                 let app_clone = app.clone();
-                
-                tokio::spawn(async move {
-                    // Tipagem Explícita: Garante que o compilador sabe que isso é um socket de dados
-                    let accept_result: Result<DataStream, _> = stream_req.accept().await;
 
-                    match accept_result {
-                        Ok(arti_stream) => {
-                            // CORREÇÃO DEFINITIVA:
-                            // Em vez de usar .compat() (trait), usamos o construtor Compat::new().
-                            // Isso força o wrapper sem depender de inferência de traits.
-                            let tokio_stream = Compat::new(arti_stream);
-                            
-                            let service = tower::ServiceBuilder::new()
-                                .service(app_clone);
-                            
-                            if let Err(err) = Http::new()
-                                .serve_connection(tokio_stream, service)
-                                .await 
-                            {
-                                error!("Erro HTTP/Tor: {}", err);
-                            }
+                tokio::spawn(async move {
+                    // Accept the stream request to get a stream of StreamRequest
+                    // O método accept() retorna um Stream de StreamRequest
+                    let mut incoming_stream_requests = match stream_req.accept().await {
+                        Ok(streams) => streams,
+                        Err(e) => {
+                            error!("Falha ao aceitar requisição de stream: {}", e);
+                            return;
                         }
-                        Err(e) => error!("Falha ao aceitar conexão Tor: {}", e),
+                    };
+
+                    // Itera sobre cada StreamRequest
+                    while let Some(stream_request) = incoming_stream_requests.next().await {
+                        // Cada StreamRequest precisa ser aceito para obter o DataStream
+                        // O Connected::new() envia a mensagem CONNECTED ao cliente
+                        match stream_request.accept(Connected::new()).await {
+                            Ok(arti_stream) => {
+                                // Usa .compat() do trait FuturesAsyncReadCompatExt
+                                // para converter de futures::io::AsyncRead para tokio::io::AsyncRead
+                                let tokio_stream = arti_stream.compat();
+
+                                let service = tower::ServiceBuilder::new()
+                                    .service(app_clone);
+
+                                if let Err(err) = Http::new()
+                                    .serve_connection(tokio_stream, service)
+                                    .await
+                                {
+                                    error!("Erro HTTP/Tor: {}", err);
+                                }
+                            }
+                            Err(e) => error!("Falha ao aceitar conexão Tor: {}", e),
+                        }
                     }
                 });
             }

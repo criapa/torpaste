@@ -1,6 +1,6 @@
-prefix=/home/yuki/Projetos/Messenger/torchat_paste/core/target/debug/build/libsodium-sys-8bbd4a9d41ff9d21/out/installed
+prefix=/workspace/torpaste/core/target/debug/build/libsodium-sys-8bbd4a9d41ff9d21/out/installed
 exec_prefix=${prefix}
-libdir=/home/yuki/Projetos/Messenger/torchat_paste/core/target/debug/build/libsodium-sys-8bbd4a9d41ff9d21/out/installed/lib
+libdir=/workspace/torpaste/core/target/debug/build/libsodium-sys-8bbd4a9d41ff9d21/out/installed/lib
 includedir=${prefix}/include
 
 Name: libsodium

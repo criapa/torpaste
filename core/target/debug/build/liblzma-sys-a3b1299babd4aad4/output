@@ -21,9 +21,9 @@ cargo:rerun-if-env-changed=PKG_CONFIG_SYSROOT_DIR_x86_64-unknown-linux-gnu
 cargo:rerun-if-env-changed=PKG_CONFIG_SYSROOT_DIR_x86_64_unknown_linux_gnu
 cargo:rerun-if-env-changed=HOST_PKG_CONFIG_SYSROOT_DIR
 cargo:rerun-if-env-changed=PKG_CONFIG_SYSROOT_DIR
-cargo:root=/home/yuki/Projetos/Messenger/torchat_paste/core/target/debug/build/liblzma-sys-a3b1299babd4aad4/out
-cargo:include=/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/liblzma-sys-0.4.5/xz/src/liblzma/api
-OUT_DIR = Some(/home/yuki/Projetos/Messenger/torchat_paste/core/target/debug/build/liblzma-sys-a3b1299babd4aad4/out)
+cargo:root=/workspace/torpaste/core/target/debug/build/liblzma-sys-a3b1299babd4aad4/out
+cargo:include=/home/minimax/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/liblzma-sys-0.4.5/xz/src/liblzma/api
+OUT_DIR = Some(/workspace/torpaste/core/target/debug/build/liblzma-sys-a3b1299babd4aad4/out)
 OPT_LEVEL = Some(0)
 TARGET = Some(x86_64-unknown-linux-gnu)
 CARGO_ENCODED_RUSTFLAGS = Some()
@@ -144,4 +144,4 @@ ARFLAGS_x86_64_unknown_linux_gnu = None
 cargo:rerun-if-env-changed=ARFLAGS_x86_64-unknown-linux-gnu
 ARFLAGS_x86_64-unknown-linux-gnu = None
 cargo:rustc-link-lib=static=lzma
-cargo:rustc-link-search=native=/home/yuki/Projetos/Messenger/torchat_paste/core/target/debug/build/liblzma-sys-a3b1299babd4aad4/out
+cargo:rustc-link-search=native=/workspace/torpaste/core/target/debug/build/liblzma-sys-a3b1299babd4aad4/out

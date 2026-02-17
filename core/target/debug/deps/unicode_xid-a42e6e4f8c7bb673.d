@@ -1,8 +1,8 @@
-/home/yuki/Projetos/Messenger/torchat_paste/core/target/debug/deps/unicode_xid-a42e6e4f8c7bb673.d: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6/src/tables.rs
+/home/yuki/Downloads/torpaste/core/target/debug/deps/unicode_xid-a42e6e4f8c7bb673.d: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6/src/tables.rs
 
-/home/yuki/Projetos/Messenger/torchat_paste/core/target/debug/deps/libunicode_xid-a42e6e4f8c7bb673.rlib: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6/src/tables.rs
+/home/yuki/Downloads/torpaste/core/target/debug/deps/libunicode_xid-a42e6e4f8c7bb673.rlib: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6/src/tables.rs
 
-/home/yuki/Projetos/Messenger/torchat_paste/core/target/debug/deps/libunicode_xid-a42e6e4f8c7bb673.rmeta: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6/src/tables.rs
+/home/yuki/Downloads/torpaste/core/target/debug/deps/libunicode_xid-a42e6e4f8c7bb673.rmeta: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6/src/tables.rs
 
 /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6/src/lib.rs:
 /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/unicode-xid-0.2.6/src/tables.rs:

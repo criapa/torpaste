@@ -1,0 +1,11 @@
+/home/yuki/Downloads/torpaste/core/target/debug/deps/derive_deftly-1930ac93adb108ea.d: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../README.md /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../doc/reference.md /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../doc/implementation.md /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../CHANGELOG.md
+
+/home/yuki/Downloads/torpaste/core/target/debug/deps/libderive_deftly-1930ac93adb108ea.rlib: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../README.md /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../doc/reference.md /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../doc/implementation.md /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../CHANGELOG.md
+
+/home/yuki/Downloads/torpaste/core/target/debug/deps/libderive_deftly-1930ac93adb108ea.rmeta: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../README.md /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../doc/reference.md /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../doc/implementation.md /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../CHANGELOG.md
+
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/lib.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../README.md:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../doc/reference.md:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../doc/implementation.md:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/derive-deftly-1.6.0/src/../CHANGELOG.md:

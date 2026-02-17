@@ -1,0 +1,12 @@
+/home/yuki/Downloads/torpaste/core/target/debug/deps/amplify_derive-e2ff4948262588df.d: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/util.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/as_any.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/display.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/error.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/from.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/getters.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/wrapper.rs
+
+/home/yuki/Downloads/torpaste/core/target/debug/deps/libamplify_derive-e2ff4948262588df.so: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/util.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/as_any.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/display.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/error.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/from.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/getters.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/wrapper.rs
+
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/lib.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/util.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/as_any.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/display.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/error.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/from.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/getters.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/amplify_derive-4.0.1/src/wrapper.rs:

@@ -70,7 +70,7 @@ crypto_pwhash/argon2/argon2-core.c:342:27: warning: comparison is always false d
   342 |     if (ARGON2_MAX_MEMORY < context->m_cost) {
       |                           ^
 In file included from crypto_pwhash/argon2/argon2-core.c:31:
-At top level:
+crypto_pwhash/argon2/argon2-core.h: At top level:
 crypto_pwhash/argon2/argon2-core.h:139:17: warning: ‘index_alpha’ defined but not used [-Wunused-function]
   139 | static uint32_t index_alpha(const argon2_instance_t *instance,
       |                 ^~~~~~~~~~~
@@ -105,7 +105,7 @@ crypto_pwhash/argon2/pwhash_argon2i.c:228:19: warning: comparison of unsigned ex
   228 |     if (passwdlen < crypto_pwhash_argon2i_PASSWD_MIN) {
       |                   ^
 In file included from crypto_pwhash/argon2/pwhash_argon2i.c:9:
-At top level:
+crypto_pwhash/argon2/argon2-core.h: At top level:
 crypto_pwhash/argon2/argon2-core.h:139:17: warning: ‘index_alpha’ defined but not used [-Wunused-function]
   139 | static uint32_t index_alpha(const argon2_instance_t *instance,
       |                 ^~~~~~~~~~~
@@ -122,7 +122,7 @@ crypto_pwhash/argon2/pwhash_argon2id.c:224:19: warning: comparison of unsigned e
   224 |     if (passwdlen < crypto_pwhash_argon2id_PASSWD_MIN) {
       |                   ^
 In file included from crypto_pwhash/argon2/pwhash_argon2id.c:8:
-At top level:
+crypto_pwhash/argon2/argon2-core.h: At top level:
 crypto_pwhash/argon2/argon2-core.h:139:17: warning: ‘index_alpha’ defined but not used [-Wunused-function]
   139 | static uint32_t index_alpha(const argon2_instance_t *instance,
       |                 ^~~~~~~~~~~
@@ -283,15 +283,15 @@ libtool: warning: '-version-info/-version-number' is ignored for convenience lib
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: warning: '-version-info/-version-number' is ignored for convenience libraries
 ar: `u' modifier ignored since `D' is the default (see `U')
-libtool: warning: '-version-info/-version-number' is ignored for convenience libraries
-ar: `u' modifier ignored since `D' is the default (see `U')
-libtool: warning: '-version-info/-version-number' is ignored for convenience libraries
-ar: `u' modifier ignored since `D' is the default (see `U')
-libtool: warning: '-version-info/-version-number' is ignored for convenience libraries
-ar: `u' modifier ignored since `D' is the default (see `U')
 randombytes/internal/randombytes_internal_random.c:317:1: warning: ‘safe_read’ defined but not used [-Wunused-function]
   317 | safe_read(const int fd, void * const buf_, size_t size)
       | ^~~~~~~~~
+libtool: warning: '-version-info/-version-number' is ignored for convenience libraries
+libtool: warning: '-version-info/-version-number' is ignored for convenience libraries
+ar: `u' modifier ignored since `D' is the default (see `U')
+ar: `u' modifier ignored since `D' is the default (see `U')
+libtool: warning: '-version-info/-version-number' is ignored for convenience libraries
+ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: warning: '-version-info/-version-number' is ignored for convenience libraries
 ar: `u' modifier ignored since `D' is the default (see `U')
 libtool: warning: '-version-info/-version-number' is ignored for convenience libraries
@@ -305,7 +305,7 @@ pwhash_argon2i.c:293:9: warning: ‘crypto_pwhash_argon2i_str_verify’ reading 
       |                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   295 |                                          "password", 0x100000000ULL) != -1) {
       |                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2i.c:293:9: note: referencing argument 1 of type ‘const char *’
+pwhash_argon2i.c:293:9: note: referencing argument 1 of type ‘const char[128]’
 In file included from ../../src/libsodium/include/sodium/crypto_pwhash.h:6,
                  from ../../src/libsodium/include/sodium.h:32,
                  from cmptest.h:17,
@@ -320,11 +320,7 @@ pwhash_argon2i.c:298:9: warning: ‘crypto_pwhash_argon2i_str_verify’ reading 
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   300 |                                  "password", strlen("password")) != -1) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2i.c:298:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium/crypto_pwhash.h:6,
-                 from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2i.c:3:
+pwhash_argon2i.c:298:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash_argon2i.h:108:5: note: in a call to function ‘crypto_pwhash_argon2i_str_verify’
   108 | int crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -335,11 +331,7 @@ pwhash_argon2i.c:303:9: warning: ‘crypto_pwhash_argon2i_str_verify’ reading 
       |                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   305 |                                          "password", strlen("password")) != -1) {
       |                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2i.c:303:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium/crypto_pwhash.h:6,
-                 from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2i.c:3:
+pwhash_argon2i.c:303:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash_argon2i.h:108:5: note: in a call to function ‘crypto_pwhash_argon2i_str_verify’
   108 | int crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -350,10 +342,7 @@ pwhash_argon2i.c:308:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byte
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   310 |                                  "password", strlen("password")) != -1) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2i.c:308:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2i.c:3:
+pwhash_argon2i.c:308:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -364,10 +353,7 @@ pwhash_argon2i.c:313:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byte
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   315 |                                  "password", strlen("password")) != -1) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2i.c:313:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2i.c:3:
+pwhash_argon2i.c:313:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -378,10 +364,7 @@ pwhash_argon2i.c:318:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byte
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   320 |                                  "password", strlen("password")) != -1) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2i.c:318:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2i.c:3:
+pwhash_argon2i.c:318:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -392,10 +375,7 @@ pwhash_argon2i.c:323:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byte
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   325 |                                  "password", strlen("password")) != -1) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2i.c:323:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2i.c:3:
+pwhash_argon2i.c:323:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -408,10 +388,7 @@ pwhash_argon2i.c:328:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byte
       |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   331 |             "password", strlen("password")) != 0) {
       |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2i.c:328:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2i.c:3:
+pwhash_argon2i.c:328:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -424,10 +401,7 @@ pwhash_argon2i.c:334:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byte
       |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   337 |             "passwore", strlen("passwore")) != -1 || errno != EINVAL) {
       |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2i.c:334:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2i.c:3:
+pwhash_argon2i.c:334:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -440,10 +414,7 @@ pwhash_argon2i.c:340:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byte
       |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   343 |             "password", strlen("password")) != -1 || errno != EINVAL) {
       |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2i.c:340:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2i.c:3:
+pwhash_argon2i.c:340:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -456,10 +427,7 @@ pwhash_argon2i.c:346:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byte
       |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   349 |             "password", strlen("password")) != -1 || errno != EINVAL) {
       |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2i.c:346:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2i.c:3:
+pwhash_argon2i.c:346:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -472,10 +440,7 @@ pwhash_argon2i.c:352:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byte
       |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   355 |             "password", strlen("password")) != -1 || errno != EINVAL) {
       |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2i.c:352:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2i.c:3:
+pwhash_argon2i.c:352:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -488,36 +453,192 @@ pwhash_argon2i.c:358:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byte
       |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   361 |             "password", strlen("password")) != -1 || errno != EINVAL) {
       |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2i.c:358:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2i.c:3:
+pwhash_argon2i.c:358:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
-In file included from cmptest.h:9,
-                 from pwhash_argon2i.c:3:
+In file included from cmptest.h:9:
 pwhash_argon2i.c:378:12: warning: ‘crypto_pwhash_argon2id_str_needs_rehash’ reading 128 bytes from a region of size 1 [-Wstringop-overread]
   378 |     assert(crypto_pwhash_argon2id_str_needs_rehash("", OPSLIMIT, MEMLIMIT) == -1);
       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2i.c:378:12: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium/crypto_pwhash.h:7,
-                 from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2i.c:3:
+pwhash_argon2i.c:378:12: note: referencing argument 1 of type ‘const char[128]’
+In file included from ../../src/libsodium/include/sodium/crypto_pwhash.h:7:
 ../../src/libsodium/include/sodium/crypto_pwhash_argon2id.h:114:5: note: in a call to function ‘crypto_pwhash_argon2id_str_needs_rehash’
   114 | int crypto_pwhash_argon2id_str_needs_rehash(const char str[crypto_pwhash_argon2id_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from cmptest.h:9,
-                 from pwhash_argon2i.c:3:
 pwhash_argon2i.c:390:12: warning: ‘crypto_pwhash_argon2id_str_needs_rehash’ reading 128 bytes from a region of size 1 [-Wstringop-overread]
   390 |     assert(crypto_pwhash_argon2id_str_needs_rehash("", OPSLIMIT, MEMLIMIT) == -1);
       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2i.c:390:12: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium/crypto_pwhash.h:7,
-                 from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2i.c:3:
+pwhash_argon2i.c:390:12: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash_argon2id.h:114:5: note: in a call to function ‘crypto_pwhash_argon2id_str_needs_rehash’
+  114 | int crypto_pwhash_argon2id_str_needs_rehash(const char str[crypto_pwhash_argon2id_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:293:9: warning: ‘crypto_pwhash_argon2i_str_verify’ reading 128 bytes from a region of size 80 [-Wstringop-overread]
+  293 |     if (crypto_pwhash_argon2i_str_verify("$argon2i$m=65536,t=2,p=1c29tZXNhbHQ"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  294 |                                          "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
+      |                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  295 |                                          "password", 0x100000000ULL) != -1) {
+      |                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:293:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash_argon2i.h:108:5: note: in a call to function ‘crypto_pwhash_argon2i_str_verify’
+  108 | int crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:298:9: warning: ‘crypto_pwhash_argon2i_str_verify’ reading 128 bytes from a region of size 80 [-Wstringop-overread]
+  298 |     if (crypto_pwhash_argon2i_str_verify("$argon2i$m=65536,t=2,p=1c29tZXNhbHQ"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  299 |                                  "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  300 |                                  "password", strlen("password")) != -1) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:298:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash_argon2i.h:108:5: note: in a call to function ‘crypto_pwhash_argon2i_str_verify’
+  108 | int crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:303:9: warning: ‘crypto_pwhash_argon2i_str_verify’ reading 128 bytes from a region of size 80 [-Wstringop-overread]
+  303 |     if (crypto_pwhash_argon2i_str_verify("$argon2i$m=65536,t=2,p=1$c29tZXNhbHQ"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  304 |                                          "9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
+      |                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  305 |                                          "password", strlen("password")) != -1) {
+      |                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:303:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash_argon2i.h:108:5: note: in a call to function ‘crypto_pwhash_argon2i_str_verify’
+  108 | int crypto_pwhash_argon2i_str_verify(const char str[crypto_pwhash_argon2i_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:308:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 81 [-Wstringop-overread]
+  308 |     if (crypto_pwhash_str_verify("$argon2i$m=65536,t=2,p=1$c29tZXNhbHQ"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  309 |                                  "$b2G3seW+uPzerwQQC+/E1K50CLLO7YXy0JRcaTuswRo",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  310 |                                  "password", strlen("password")) != -1) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:308:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:313:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 85 [-Wstringop-overread]
+  313 |     if (crypto_pwhash_str_verify("$argon2i$v=19$m=65536,t=2,p=1c29tZXNhbHQ"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  314 |                                  "$wWKIMhR9lyDFvRz9YTZweHKfbftvj+qf+YFY4NeBbtA",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  315 |                                  "password", strlen("password")) != -1) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:313:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:318:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 85 [-Wstringop-overread]
+  318 |     if (crypto_pwhash_str_verify("$argon2i$v=19$m=65536,t=2,p=1$c29tZXNhbHQ"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  319 |                                  "wWKIMhR9lyDFvRz9YTZweHKfbftvj+qf+YFY4NeBbtA",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  320 |                                  "password", strlen("password")) != -1) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:318:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:323:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 86 [-Wstringop-overread]
+  323 |     if (crypto_pwhash_str_verify("$argon2i$v=19$m=65536,t=2,p=1$c29tZXNhbHQ"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  324 |                                  "$8iIuixkI73Js3G1uMbezQXD0b8LG4SXGsOwoQkdAQIM",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  325 |                                  "password", strlen("password")) != -1) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:323:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:328:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 96 [-Wstringop-overread]
+  328 |     if (crypto_pwhash_str_verify(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+  329 |             "$argon2i$v=19$m=4096,t=3,p=2$b2RpZHVlamRpc29kaXNrdw"
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  330 |             "$TNnWIwlu1061JHrnCqIAmjs3huSxYIU+0jWipu7Kc9M",
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  331 |             "password", strlen("password")) != 0) {
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:328:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:334:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 96 [-Wstringop-overread]
+  334 |     if (crypto_pwhash_str_verify(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+  335 |             "$argon2i$v=19$m=4096,t=3,p=2$b2RpZHVlamRpc29kaXNrdw"
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  336 |             "$TNnWIwlu1061JHrnCqIAmjs3huSxYIU+0jWipu7Kc9M",
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  337 |             "passwore", strlen("passwore")) != -1 || errno != EINVAL) {
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:334:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:340:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 96 [-Wstringop-overread]
+  340 |     if (crypto_pwhash_str_verify(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+  341 |             "$Argon2i$v=19$m=4096,t=3,p=2$b2RpZHVlamRpc29kaXNrdw"
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  342 |             "$TNnWIwlu1061JHrnCqIAmjs3huSxYIU+0jWipu7Kc9M",
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  343 |             "password", strlen("password")) != -1 || errno != EINVAL) {
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:340:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:346:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 95 [-Wstringop-overread]
+  346 |     if (crypto_pwhash_str_verify(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+  347 |             "$argon2i$v=1$m=4096,t=3,p=2$b2RpZHVlamRpc29kaXNrdw"
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  348 |             "$TNnWIwlu1061JHrnCqIAmjs3huSxYIU+0jWipu7Kc9M",
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  349 |             "password", strlen("password")) != -1 || errno != EINVAL) {
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:346:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:352:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 97 [-Wstringop-overread]
+  352 |     if (crypto_pwhash_str_verify(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+  353 |             "$argon2i$v=1$m=4096,t=3,p=2$b2RpZHVla~=mRpc29kaXNrdw"
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  354 |             "$TNnWIwlu1061JHrnCqIAmjs3huSxYIU+0jWipu7Kc9M",
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  355 |             "password", strlen("password")) != -1 || errno != EINVAL) {
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:352:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:358:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 97 [-Wstringop-overread]
+  358 |     if (crypto_pwhash_str_verify(
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+  359 |             "$argon2i$v=1$m=4096,t=3,p=2$b2RpZHVlamRpc29kaXNrdw"
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  360 |             "$TNnWIwlu1061JHrnCqIAmjs3huSxYI~=U+0jWipu7Kc9M",
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  361 |             "password", strlen("password")) != -1 || errno != EINVAL) {
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:358:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:378:12: warning: ‘crypto_pwhash_argon2id_str_needs_rehash’ reading 128 bytes from a region of size 1 [-Wstringop-overread]
+  378 |     assert(crypto_pwhash_argon2id_str_needs_rehash("", OPSLIMIT, MEMLIMIT) == -1);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:378:12: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash_argon2id.h:114:5: note: in a call to function ‘crypto_pwhash_argon2id_str_needs_rehash’
+  114 | int crypto_pwhash_argon2id_str_needs_rehash(const char str[crypto_pwhash_argon2id_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:390:12: warning: ‘crypto_pwhash_argon2id_str_needs_rehash’ reading 128 bytes from a region of size 1 [-Wstringop-overread]
+  390 |     assert(crypto_pwhash_argon2id_str_needs_rehash("", OPSLIMIT, MEMLIMIT) == -1);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2i.c:390:12: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash_argon2id.h:114:5: note: in a call to function ‘crypto_pwhash_argon2id_str_needs_rehash’
   114 | int crypto_pwhash_argon2id_str_needs_rehash(const char str[crypto_pwhash_argon2id_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -529,7 +650,7 @@ pwhash_argon2id.c:307:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byt
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   309 |                                  "password", 0x100000000ULL) != -1) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2id.c:307:9: note: referencing argument 1 of type ‘const char *’
+pwhash_argon2id.c:307:9: note: referencing argument 1 of type ‘const char[128]’
 In file included from ../../src/libsodium/include/sodium.h:32,
                  from cmptest.h:17,
                  from pwhash_argon2id.c:3:
@@ -543,10 +664,7 @@ pwhash_argon2id.c:312:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byt
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   314 |                                  "password", strlen("password")) != -1) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2id.c:312:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2id.c:3:
+pwhash_argon2id.c:312:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -557,10 +675,7 @@ pwhash_argon2id.c:317:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byt
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   319 |                                  "password", strlen("password")) != -1) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2id.c:317:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2id.c:3:
+pwhash_argon2id.c:317:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -571,10 +686,7 @@ pwhash_argon2id.c:322:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byt
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   324 |                                  "password", strlen("password")) != -1) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2id.c:322:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2id.c:3:
+pwhash_argon2id.c:322:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -585,10 +697,7 @@ pwhash_argon2id.c:327:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byt
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   329 |                                  "password", strlen("password")) != -1) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2id.c:327:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2id.c:3:
+pwhash_argon2id.c:327:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -599,10 +708,7 @@ pwhash_argon2id.c:332:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byt
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   334 |                                  "password", strlen("password")) != -1) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2id.c:332:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2id.c:3:
+pwhash_argon2id.c:332:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -613,10 +719,7 @@ pwhash_argon2id.c:337:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byt
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   339 |                                  "password", strlen("password")) != -1) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2id.c:337:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2id.c:3:
+pwhash_argon2id.c:337:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -627,10 +730,7 @@ pwhash_argon2id.c:342:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byt
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   344 |                                  "password", strlen("password")) != 0) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2id.c:342:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2id.c:3:
+pwhash_argon2id.c:342:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -641,10 +741,7 @@ pwhash_argon2id.c:347:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byt
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   349 |                                  "passwore", strlen("passwore")) != -1 || errno != EINVAL) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2id.c:347:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2id.c:3:
+pwhash_argon2id.c:347:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -655,10 +752,7 @@ pwhash_argon2id.c:352:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byt
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   354 |                                  "password", strlen("password")) != -1 || errno != EINVAL) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2id.c:352:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2id.c:3:
+pwhash_argon2id.c:352:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
@@ -669,36 +763,158 @@ pwhash_argon2id.c:357:9: warning: ‘crypto_pwhash_str_verify’ reading 128 byt
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   359 |                                  "password", strlen("password")) != -1 || errno != EINVAL) {
       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2id.c:357:9: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2id.c:3:
+pwhash_argon2id.c:357:9: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
   128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~
-In file included from cmptest.h:9,
-                 from pwhash_argon2id.c:3:
+In file included from cmptest.h:9:
 pwhash_argon2id.c:376:12: warning: ‘crypto_pwhash_argon2i_str_needs_rehash’ reading 128 bytes from a region of size 1 [-Wstringop-overread]
   376 |     assert(crypto_pwhash_argon2i_str_needs_rehash("", OPSLIMIT, MEMLIMIT) == -1);
       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2id.c:376:12: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium/crypto_pwhash.h:6,
-                 from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2id.c:3:
+pwhash_argon2id.c:376:12: note: referencing argument 1 of type ‘const char[128]’
+In file included from ../../src/libsodium/include/sodium/crypto_pwhash.h:6:
 ../../src/libsodium/include/sodium/crypto_pwhash_argon2i.h:114:5: note: in a call to function ‘crypto_pwhash_argon2i_str_needs_rehash’
   114 | int crypto_pwhash_argon2i_str_needs_rehash(const char str[crypto_pwhash_argon2i_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from cmptest.h:9,
-                 from pwhash_argon2id.c:3:
 pwhash_argon2id.c:388:12: warning: ‘crypto_pwhash_argon2i_str_needs_rehash’ reading 128 bytes from a region of size 1 [-Wstringop-overread]
   388 |     assert(crypto_pwhash_argon2i_str_needs_rehash("", OPSLIMIT, MEMLIMIT) == -1);
       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_argon2id.c:388:12: note: referencing argument 1 of type ‘const char *’
-In file included from ../../src/libsodium/include/sodium/crypto_pwhash.h:6,
-                 from ../../src/libsodium/include/sodium.h:32,
-                 from cmptest.h:17,
-                 from pwhash_argon2id.c:3:
+pwhash_argon2id.c:388:12: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash_argon2i.h:114:5: note: in a call to function ‘crypto_pwhash_argon2i_str_needs_rehash’
+  114 | int crypto_pwhash_argon2i_str_needs_rehash(const char str[crypto_pwhash_argon2i_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:307:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 81 [-Wstringop-overread]
+  307 |     if (crypto_pwhash_str_verify("$argon2id$m=65536,t=2,p=1c29tZXNhbHQ"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  308 |                                  "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  309 |                                  "password", 0x100000000ULL) != -1) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:307:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:312:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 81 [-Wstringop-overread]
+  312 |     if (crypto_pwhash_str_verify("$argon2id$m=65536,t=2,p=1c29tZXNhbHQ"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  313 |                                  "$9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  314 |                                  "password", strlen("password")) != -1) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:312:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:317:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 81 [-Wstringop-overread]
+  317 |     if (crypto_pwhash_str_verify("$argon2id$m=65536,t=2,p=1$c29tZXNhbHQ"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  318 |                                  "9sTbSlTio3Biev89thdrlKKiCaYsjjYVJxGAL3swxpQ",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  319 |                                  "password", strlen("password")) != -1) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:317:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:322:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 82 [-Wstringop-overread]
+  322 |     if (crypto_pwhash_str_verify("$argon2id$m=65536,t=2,p=1$c29tZXNhbHQ"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  323 |                                  "$b2G3seW+uPzerwQQC+/E1K50CLLO7YXy0JRcaTuswRo",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  324 |                                  "password", strlen("password")) != -1) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:322:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:327:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 86 [-Wstringop-overread]
+  327 |     if (crypto_pwhash_str_verify("$argon2id$v=19$m=65536,t=2,p=1c29tZXNhbHQ"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  328 |                                  "$wWKIMhR9lyDFvRz9YTZweHKfbftvj+qf+YFY4NeBbtA",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  329 |                                  "password", strlen("password")) != -1) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:327:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:332:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 86 [-Wstringop-overread]
+  332 |     if (crypto_pwhash_str_verify("$argon2id$v=19$m=65536,t=2,p=1$c29tZXNhbHQ"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  333 |                                  "wWKIMhR9lyDFvRz9YTZweHKfbftvj+qf+YFY4NeBbtA",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  334 |                                  "password", strlen("password")) != -1) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:332:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:337:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 87 [-Wstringop-overread]
+  337 |     if (crypto_pwhash_str_verify("$argon2id$v=19$m=65536,t=2,p=1$c29tZXNhbHQ"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  338 |                                  "$8iIuixkI73Js3G1uMbezQXD0b8LG4SXGsOwoQkdAQIM",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  339 |                                  "password", strlen("password")) != -1) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:337:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:342:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 85 [-Wstringop-overread]
+  342 |     if (crypto_pwhash_str_verify("$argon2id$v=19$m=256,t=3,p=1$MDEyMzQ1Njc"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  343 |                                  "$G5ajKFCoUzaXRLdz7UJb5wGkb2Xt+X5/GQjUYtS2+TE",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  344 |                                  "password", strlen("password")) != 0) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:342:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:347:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 85 [-Wstringop-overread]
+  347 |     if (crypto_pwhash_str_verify("$argon2id$v=19$m=256,t=3,p=1$MDEyMzQ1Njc"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  348 |                                  "$G5ajKFCoUzaXRLdz7UJb5wGkb2Xt+X5/GQjUYtS2+TE",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  349 |                                  "passwore", strlen("passwore")) != -1 || errno != EINVAL) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:347:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:352:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 85 [-Wstringop-overread]
+  352 |     if (crypto_pwhash_str_verify("$Argon2id$v=19$m=256,t=3,p=1$MDEyMzQ1Njc"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  353 |                                  "$G5ajKFCoUzaXRLdz7UJb5wGkb2Xt+X5/GQjUYtS2+TE",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  354 |                                  "password", strlen("password")) != -1 || errno != EINVAL) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:352:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:357:9: warning: ‘crypto_pwhash_str_verify’ reading 128 bytes from a region of size 85 [-Wstringop-overread]
+  357 |     if (crypto_pwhash_str_verify("$argon2id$v=19$m=256,t=3,p=2$MDEyMzQ1Njc"
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  358 |                                  "$G5ajKFCoUzaXRLdz7UJb5wGkb2Xt+X5/GQjUYtS2+TE",
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  359 |                                  "password", strlen("password")) != -1 || errno != EINVAL) {
+      |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:357:9: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash.h:128:5: note: in a call to function ‘crypto_pwhash_str_verify’
+  128 | int crypto_pwhash_str_verify(const char str[crypto_pwhash_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:376:12: warning: ‘crypto_pwhash_argon2i_str_needs_rehash’ reading 128 bytes from a region of size 1 [-Wstringop-overread]
+  376 |     assert(crypto_pwhash_argon2i_str_needs_rehash("", OPSLIMIT, MEMLIMIT) == -1);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:376:12: note: referencing argument 1 of type ‘const char[128]’
+../../src/libsodium/include/sodium/crypto_pwhash_argon2i.h:114:5: note: in a call to function ‘crypto_pwhash_argon2i_str_needs_rehash’
+  114 | int crypto_pwhash_argon2i_str_needs_rehash(const char str[crypto_pwhash_argon2i_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:388:12: warning: ‘crypto_pwhash_argon2i_str_needs_rehash’ reading 128 bytes from a region of size 1 [-Wstringop-overread]
+  388 |     assert(crypto_pwhash_argon2i_str_needs_rehash("", OPSLIMIT, MEMLIMIT) == -1);
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_argon2id.c:388:12: note: referencing argument 1 of type ‘const char[128]’
 ../../src/libsodium/include/sodium/crypto_pwhash_argon2i.h:114:5: note: in a call to function ‘crypto_pwhash_argon2i_str_needs_rehash’
   114 | int crypto_pwhash_argon2i_str_needs_rehash(const char str[crypto_pwhash_argon2i_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -718,10 +934,18 @@ pwhash_scrypt.c:356:12: warning: ‘crypto_pwhash_scryptsalsa208sha256_str_needs
       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   357 |            ("", OPSLIMIT, MEMLIMIT) == -1);
       |            ~~~~~~~~~~~~~~~~~~~~~~~~
-pwhash_scrypt.c:356:12: note: referencing argument 1 of type ‘const char *’
+pwhash_scrypt.c:356:12: note: referencing argument 1 of type ‘const char[102]’
 In file included from ../../src/libsodium/include/sodium.h:63,
-                 from cmptest.h:17,
-                 from pwhash_scrypt.c:3:
+                 from cmptest.h:17:
+../../src/libsodium/include/sodium/crypto_pwhash_scryptsalsa208sha256.h:111:5: note: in a call to function ‘crypto_pwhash_scryptsalsa208sha256_str_needs_rehash’
+  111 | int crypto_pwhash_scryptsalsa208sha256_str_needs_rehash(const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_scrypt.c:356:12: warning: ‘crypto_pwhash_scryptsalsa208sha256_str_needs_rehash’ reading 102 bytes from a region of size 1 [-Wstringop-overread]
+  356 |     assert(crypto_pwhash_scryptsalsa208sha256_str_needs_rehash
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  357 |            ("", OPSLIMIT, MEMLIMIT) == -1);
+      |            ~~~~~~~~~~~~~~~~~~~~~~~~
+pwhash_scrypt.c:356:12: note: referencing argument 1 of type ‘const char[102]’
 ../../src/libsodium/include/sodium/crypto_pwhash_scryptsalsa208sha256.h:111:5: note: in a call to function ‘crypto_pwhash_scryptsalsa208sha256_str_needs_rehash’
   111 | int crypto_pwhash_scryptsalsa208sha256_str_needs_rehash(const char str[crypto_pwhash_scryptsalsa208sha256_STRBYTES],
       |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
