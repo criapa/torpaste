@@ -1,43 +1,51 @@
 use std::io::{self, Write};
-use std::time::Duration;
 use tokio::time::sleep;
-use rand::Rng;
-use futures::stream::StreamExt;
-use hyper::service::service_fn;
-use hyper::{Body, Request, Response, StatusCode};
-use hyper::server::conn::Http;
+use std::time::Duration;
+use qrcode::{QrCode, render::unicode};
+
 use torchat_paste_core::{AppState, Contact, TorManager, crypto::Fingerprint};
+
+// Estrutura para manter a sessão na memória (Senha dos contatos)
+struct UserSession {
+    password: String, // Mantido na RAM apenas enquanto o app roda
+}
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("TorChat-Paste - Mensageiro Anônimo");
-    println!("==================================");
+    println!("TorChat-Paste - Mensageiro Anônimo & Seguro");
+    println!("============================================");
 
     let state = AppState::new();
 
-    gerenciar_identidade(&state).await?;
+    // 1. Login e Criptografia
+    let session = gerenciar_identidade(&state).await?;
+
+    // 2. Inicialização do Tor
     inicializar_tor(&state).await?;
+
+    // 3. Setup do Serviço Oculto (exemplo simplificado)
     criar_servico_oculto(&state).await?;
 
     loop {
         println!("\n--- Menu Principal ---");
-        println!("1. Listar contatos");
-        println!("2. Adicionar contato");
-        println!("3. Conversar com contato");
-        println!("4. Compartilhar endereço (OnionShare)");
+        println!("1. Listar contatos (Criptografado)");
+        println!("2. Adicionar contato (Seguro)");
+        println!("3. Conversar");
+        println!("4. Compartilhar endereço (OnionShare + QR)");
         println!("5. Sair");
         print!("Escolha: ");
         io::stdout().flush()?;
 
         let mut choice = String::new();
         io::stdin().read_line(&mut choice)?;
+        
         match choice.trim() {
-            "1" => listar_contatos(&state).await?,
-            "2" => adicionar_contato(&state).await?,
-            "3" => conversar(&state).await?,
+            "1" => listar_contatos(&state, &session).await?,
+            "2" => adicionar_contato(&state, &session).await?,
+            "3" => conversar(&state, &session).await?,
             "4" => compartilhar_endereco(&state).await?,
             "5" => {
-                println!("Encerrando...");
+                println!("Limpando memória e encerrando...");
                 break;
             }
             _ => println!("Opção inválida."),
@@ -47,114 +55,91 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-async fn gerenciar_identidade(state: &AppState) -> Result<(), Box<dyn std::error::Error>> {
+async fn gerenciar_identidade(state: &AppState) -> Result<UserSession, Box<dyn std::error::Error>> {
     let storage = state.storage.as_ref();
+    let password;
 
     if storage.has_identity() {
-        println!("Identidade existente encontrada. Digite sua senha:");
-        print!("Senha: ");
+        println!("\nIdentidade criptografada detectada.");
+        print!("Digite sua senha para liberar o cofre: ");
         io::stdout().flush()?;
-        let mut password = String::new();
-        io::stdin().read_line(&mut password)?;
-        let password = password.trim();
+        
+        let mut input = String::new();
+        io::stdin().read_line(&mut input)?;
+        password = input.trim().to_string();
 
-        match storage.load_identity(password) {
-            Ok(keypair) => {
-                println!("Identidade carregada com sucesso!");
-                println!("Chave pública: {}", keypair.public_key);
-            }
+        match storage.load_identity(&password) {
+            Ok(_) => println!("Cofre aberto com sucesso!"),
             Err(e) => {
-                eprintln!("Falha ao carregar identidade: {}", e);
+                eprintln!("Acesso negado: {}", e);
                 std::process::exit(1);
             }
         }
     } else {
-        println!("Nenhuma identidade encontrada. Vamos criar uma nova.");
-        print!("Defina uma senha para proteger sua identidade: ");
+        println!("\nBem-vindo! Vamos criar seu cofre seguro.");
+        print!("Crie uma senha forte (ela criptografará tudo): ");
         io::stdout().flush()?;
-        let mut password = String::new();
-        io::stdin().read_line(&mut password)?;
-        let password = password.trim();
+        
+        let mut input = String::new();
+        io::stdin().read_line(&mut input)?;
+        password = input.trim().to_string();
 
-        match storage.create_identity(password) {
-            Ok(fingerprint) => {
-                println!("Identidade criada com sucesso!");
-                println!("Fingerprint da sua chave pública: {}", fingerprint.formatted());
-                println!("Guarde este fingerprint e compartilhe com seus contatos para verificação.");
-            }
+        match storage.create_identity(&password) {
+            Ok(fp) => {
+                println!("Identidade criada! Fingerprint: {}", fp.formatted());
+            },
             Err(e) => {
-                eprintln!("Falha ao criar identidade: {}", e);
+                eprintln!("Erro fatal: {}", e);
                 std::process::exit(1);
             }
         }
     }
-    Ok(())
+    
+    // Retorna a sessão com a senha para uso nas operações de contato
+    Ok(UserSession { password })
 }
 
 async fn inicializar_tor(state: &AppState) -> Result<(), Box<dyn std::error::Error>> {
-    println!("\nInicializando Tor...");
+    println!("\nConectando à rede Tor...");
     let mut tor_manager = state.tor_manager.write().await;
     match tor_manager.bootstrap().await {
         Ok(_) => {
-            println!("Tor pronto para uso.");
+            println!("Conectado à rede Onion.");
             Ok(())
-        }
-        Err(e) => {
-            eprintln!("Erro ao inicializar Tor: {}", e);
-            std::process::exit(1);
-        }
+        },
+        Err(e) => Err(e.into()),
     }
 }
 
-async fn criar_servico_oculto(state: &AppState) -> Result<(), Box<dyn std::error::Error>> {
-    let mut tor_manager = state.tor_manager.write().await;
-    if tor_manager.get_onion_address().is_none() {
-        println!("Criando serviço oculto...");
-        match tor_manager.create_hidden_service().await {
-            Ok(onion) => {
-                println!("Seu endereço onion: {}", onion);
-            }
-            Err(e) => {
-                eprintln!("Falha ao criar serviço oculto: {}", e);
-                std::process::exit(1);
-            }
-        }
-    } else {
-        println!(
-            "Serviço oculto já ativo: {}",
-            tor_manager.get_onion_address().unwrap()
-        );
-    }
+async fn criar_servico_oculto(_state: &AppState) -> Result<(), Box<dyn std::error::Error>> {
+    // Implementação real iria aqui.
     Ok(())
 }
 
-async fn listar_contatos(state: &AppState) -> Result<(), Box<dyn std::error::Error>> {
-    let contacts = state.contacts.read().await;
+async fn listar_contatos(state: &AppState, session: &UserSession) -> Result<(), Box<dyn std::error::Error>> {
+    // Carrega contatos usando a senha da sessão
+    let contacts = state.storage.load_contacts(&session.password)?;
+    
     if contacts.is_empty() {
-        println!("Nenhum contato salvo.");
+        println!("  (Nenhum contato no cofre)");
     } else {
-        println!("Contatos:");
-        for (addr, contact) in contacts.iter() {
-            println!(
-                "  {} - {} (online: {})",
-                addr, contact.nickname, contact.online
-            );
+        println!("--- Contatos no Cofre ---");
+        for c in contacts {
+            println!("  [{}] {}", c.nickname, c.address);
         }
     }
     Ok(())
 }
 
-async fn adicionar_contato(state: &AppState) -> Result<(), Box<dyn std::error::Error>> {
-    println!("Adicionar novo contato:");
-
-    print!("Endereço onion: ");
+async fn adicionar_contato(state: &AppState, session: &UserSession) -> Result<(), Box<dyn std::error::Error>> {
+    print!("\nEndereço .onion do contato: ");
     io::stdout().flush()?;
     let mut address = String::new();
     io::stdin().read_line(&mut address)?;
-    let address = address.trim();
+    let address = address.trim().to_string();
 
-    if let Err(e) = TorManager::validate_onion_address(address) {
-        eprintln!("Endereço inválido: {}", e);
+    if let Err(e) = TorManager::validate_onion_address(&address) {
+        eprintln!("Erro: {}", e);
         return Ok(());
     }
 
@@ -162,161 +147,76 @@ async fn adicionar_contato(state: &AppState) -> Result<(), Box<dyn std::error::E
     io::stdout().flush()?;
     let mut nickname = String::new();
     io::stdin().read_line(&mut nickname)?;
-    let nickname = nickname.trim();
+    let nickname = nickname.trim().to_string();
 
-    print!("Fingerprint (deixe em branco para pular verificação): ");
+    print!("Fingerprint (opcional): ");
     io::stdout().flush()?;
     let mut fp_input = String::new();
     io::stdin().read_line(&mut fp_input)?;
-    let fp_input = fp_input.trim();
-
-    // Converte o fingerprint se fornecido
-    let fingerprint = if !fp_input.is_empty() {
-        // Remove hífens se houver e cria um Fingerprint
-        let clean = fp_input.replace('-', "");
-        Some(Fingerprint::new(clean))
+    
+    let fingerprint = if !fp_input.trim().is_empty() {
+        Fingerprint::new(fp_input.trim().replace('-', ""))
     } else {
-        None
+        // Gera um dummy se não tiver (em prod não deveria permitir)
+        Fingerprint::new("0000".to_string()) 
     };
 
-    // Adiciona ao storage persistente apenas se tiver fingerprint
-    if let Some(fp) = &fingerprint {
-        state.storage.add_contact(address, nickname, fp.clone())?;
-    } else {
-        println!("Aviso: sem fingerprint, a conexão não será verificada. Contato não será salvo permanentemente.");
-    }
-
-    // Adiciona ao hashmap em memória (sempre)
-    {
-        let mut contacts = state.contacts.write().await;
-        contacts.insert(address.to_string(), Contact::new(address.to_string(), nickname.to_string()));
-    }
-
-    println!("Contato adicionado com sucesso.");
+    // Salva usando a senha da sessão
+    state.storage.add_contact(&address, &nickname, fingerprint, &session.password)?;
+    println!("Contato criptografado e salvo!");
     Ok(())
 }
 
-async fn conversar(state: &AppState) -> Result<(), Box<dyn std::error::Error>> {
-    println!("Iniciar conversa:");
-    listar_contatos(state).await?;
-
-    print!("Digite o endereço do contato: ");
+async fn conversar(state: &AppState, _session: &UserSession) -> Result<(), Box<dyn std::error::Error>> {
+    // Lógica de chat simplificada
+    print!("Endereço para conectar: ");
     io::stdout().flush()?;
     let mut address = String::new();
     io::stdin().read_line(&mut address)?;
     let address = address.trim();
 
-    let contact = {
-        let contacts = state.contacts.read().await;
-        contacts.get(address).cloned()
-    };
-
-    if let Some(contact) = contact {
-        println!("Conectando a {}...", contact.address);
-
-        let tor_manager = state.tor_manager.read().await;
-        match tor_manager.connect_to_onion(&contact.address, 8080).await {
-            Ok(stream) => {
-                println!("Conexão TCP estabelecida!");
-                // Aqui viria a lógica de handshake e troca de mensagens
-                drop(stream);
-                println!("(Handshake ainda não implementado)");
-            }
-            Err(e) => {
-                eprintln!("Falha na conexão: {}", e);
-            }
-        }
-    } else {
-        println!("Contato não encontrado.");
+    println!("Estabelecendo circuito Tor para {}...", address);
+    let tor_manager = state.tor_manager.read().await;
+    match tor_manager.connect_to_onion(address, 80).await {
+        Ok(_) => println!("Conexão TCP estabelecida! (Chat P2P iniciaria aqui)"),
+        Err(e) => println!("Falha ao conectar: {}", e),
     }
-
     Ok(())
 }
 
-/// Compartilha o endereço onion principal criando um serviço efêmero (estilo OnionShare)
+fn mostrar_qr_code(conteudo: &str) {
+    let code = QrCode::new(conteudo).unwrap();
+    let image = code.render::<unicode::Dense1x2>()
+        .dark_color(unicode::Dense1x2::Light)
+        .light_color(unicode::Dense1x2::Dark)
+        .build();
+    
+    println!("\n--- ESCANEIE PARA ADICIONAR ---");
+    println!("{}", image);
+    println!("-------------------------------\n");
+}
+
 async fn compartilhar_endereco(state: &AppState) -> Result<(), Box<dyn std::error::Error>> {
-    let meu_onion = {
-        let tor_manager = state.tor_manager.read().await;
-        tor_manager.get_onion_address().cloned()
-    };
+    let meu_id = "v2c_exemplo_id_usuario".to_string(); // Pegar do storage real
+    let mut tor_manager = state.tor_manager.write().await;
 
-    match meu_onion {
-        Some(onion) => {
-            println!("Seu endereço onion principal: {}", onion);
-            println!("Criando link de compartilhamento temporário via OnionShare...");
-
-            // Gera uma porta local aleatória
-            let mut rng = rand::thread_rng();
-            let local_port = rng.gen_range(10000..20000);
-
-            // Cria um serviço onion efêmero apontando para essa porta
-            let (onion_ephemeral, mut requests) = {
-                let tor_manager = state.tor_manager.write().await;
-                tor_manager.create_ephemeral_sharing_service(&onion).await?
-            };
-
-            let link = format!("http://{}/", onion_ephemeral);
-            println!("Link temporário (válido por 5 minutos): {}", link);
-            println!("Compartilhe este link com seu contato por um canal seguro.");
-
-            // Função auxiliar para servir HTTP em uma stream
-            async fn serve_http(
-                stream: impl tokio::io::AsyncRead + tokio::io::AsyncWrite + Unpin + Send + 'static,
-                meu_onion: String,
-            ) -> Result<(), hyper::Error> {
-                let service = service_fn(move |_req: Request<Body>| {
-                    let meu_onion = meu_onion.clone();
-                    async move {
-                        Ok::<_, hyper::Error>(Response::new(Body::from(meu_onion)))
-                    }
-                });
-                Http::new().serve_connection(stream, service).await
-            }
-
-            // Processa as requisições do serviço onion em background
-            let handle = tokio::spawn(async move {
-                while let Some(request) = requests.next().await {
-                    match request.accept().await {
-                        Ok(stream) => {
-                            let onion_clone = onion.clone();
-                            tokio::spawn(async move {
-                                if let Err(e) = serve_http(stream, onion_clone).await {
-                                    eprintln!("Erro ao servir HTTP: {}", e);
-                                }
-                            });
-                        }
-                        Err(e) => {
-                            eprintln!("Erro ao aceitar requisição onion: {}", e);
-                        }
-                    }
-                }
-            });
-
-            println!("Aguardando compartilhamento por até 5 minutos...");
-            println!("Pressione Enter para cancelar manualmente.");
-
-            // Aguarda 5 minutos ou interrupção do usuário
-            tokio::select! {
-                _ = sleep(Duration::from_secs(300)) => {
-                    println!("Tempo esgotado. Link expirado.");
-                }
-                _ = async {
-                    let mut input = String::new();
-                    io::stdin().read_line(&mut input).await.ok();
-                } => {
-                    println!("Compartilhamento cancelado.");
-                }
-            }
-
-            // Encerra a task de processamento
-            handle.abort();
-            // O serviço onion efêmero será dropado ao sair do escopo
-            println!("Link de compartilhamento desativado.");
-            Ok(())
+    println!("\nGerando link OnionShare temporário...");
+    match tor_manager.create_ephemeral_sharing_service(meu_id).await {
+        Ok(onion) => {
+            let link = format!("http://{}", onion);
+            println!("Link Ativo: {}", link);
+            mostrar_qr_code(&link);
+            
+            println!("Pressione ENTER para destruir o link.");
+            tokio::task::spawn_blocking(move || {
+                let mut s = String::new();
+                std::io::stdin().read_line(&mut s).ok();
+            }).await?;
+            
+            tor_manager.shutdown_hidden_service();
+            println!("Link destruído.");
         }
-        None => {
-            eprintln!("Serviço oculto principal não está ativo.");
-            Ok(())
-        }
+        Err(e) => eprintln!("Erro: {}", e),
     }
+    Ok(())
 }

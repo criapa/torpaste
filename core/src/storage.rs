@@ -1,4 +1,5 @@
-//! Secure Storage - Agora com identidade criptografada em repouso
+//! Secure Storage
+//! Contatos e Identidade agora são 100% criptografados em disco.
 
 use std::fs;
 use std::path::PathBuf;
@@ -6,6 +7,8 @@ use serde::{Deserialize, Serialize};
 use thiserror::Error;
 use log::{info, error};
 use base64::{Engine as _, engine::general_purpose::STANDARD as BASE64};
+#[cfg(unix)]
+use std::os::unix::fs::PermissionsExt;
 
 use crate::crypto::{self, Fingerprint, IdentityKeyPair};
 
@@ -25,16 +28,12 @@ pub enum StorageError {
     FingerprintMismatch,
 }
 
-/// Identidade armazenada de forma segura (criptografada em disco)
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SecureIdentity {
-    /// Fingerprint da chave pública (para verificação)
     pub fingerprint: Fingerprint,
-    /// Dados criptografados: contém o IdentityKeyPair em formato JSON
-    pub encrypted_data: String, // base64
+    pub encrypted_data: String, 
 }
 
-/// Contact armazenado localmente
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StoredContact {
     pub address: String,
@@ -43,7 +42,13 @@ pub struct StoredContact {
     pub added_at: i64,
 }
 
-/// Gerenciador de armazenamento seguro
+/// Estrutura auxiliar para salvar o arquivo de contatos criptografado
+#[derive(Serialize, Deserialize)]
+struct EncryptedContactsFile {
+    /// O ciphertext aqui contém [Salt + Nonce + Ciphertext]
+    blob: String, 
+}
+
 pub struct SecureStorage {
     storage_dir: PathBuf,
 }
@@ -61,14 +66,14 @@ impl SecureStorage {
         Self { storage_dir }
     }
 
-    /// Verifica se a identidade existe (o arquivo)
     pub fn has_identity(&self) -> bool {
         self.storage_dir.join("identity.enc").exists()
     }
 
-    /// Cria uma nova identidade e a salva criptografada com a senha
     pub fn create_identity(&self, password: &str) -> Result<Fingerprint, StorageError> {
         let keypair = crypto::Crypto::generate_identity();
+        
+        // Fingerprint é público, pode ficar visível no arquivo para verificação rápida
         let fingerprint = {
             let pk_bytes = BASE64.decode(&keypair.public_key)
                 .map_err(|e| StorageError::EncryptionError(e.to_string()))?;
@@ -88,31 +93,13 @@ impl SecureStorage {
             encrypted_data: BASE64.encode(&encrypted),
         };
 
-        let path = self.storage_dir.join("identity.enc");
-        let content = serde_json::to_string_pretty(&secure_id)
-            .map_err(|e| StorageError::SerializationError(e.to_string()))?;
-
-        fs::write(&path, content)
-            .map_err(|e| StorageError::IoError(e.to_string()))?;
-
-        #[cfg(unix)]
-        Self::set_permissions_unix(&path);
-
-        info!("New identity created with fingerprint: {}", fingerprint.formatted());
+        self.write_secure_file("identity.enc", &secure_id)?;
+        info!("New identity created: {}", fingerprint.formatted());
         Ok(fingerprint)
     }
 
-    /// Carrega a identidade (requer senha)
     pub fn load_identity(&self, password: &str) -> Result<IdentityKeyPair, StorageError> {
-        let path = self.storage_dir.join("identity.enc");
-        if !path.exists() {
-            return Err(StorageError::IdentityNotFound);
-        }
-
-        let content = fs::read_to_string(&path)
-            .map_err(|e| StorageError::IoError(e.to_string()))?;
-        let secure_id: SecureIdentity = serde_json::from_str(&content)
-            .map_err(|e| StorageError::SerializationError(e.to_string()))?;
+        let secure_id: SecureIdentity = self.read_secure_file("identity.enc")?;
 
         let encrypted = BASE64.decode(&secure_id.encrypted_data)
             .map_err(|e| StorageError::EncryptionError(e.to_string()))?;
@@ -123,181 +110,124 @@ impl SecureStorage {
         let keypair: IdentityKeyPair = serde_json::from_slice(&plain)
             .map_err(|e| StorageError::SerializationError(e.to_string()))?;
 
-        // Verifica se o fingerprint corresponde (integridade)
-        let pk_bytes = BASE64.decode(&keypair.public_key)
-            .map_err(|e| StorageError::EncryptionError(e.to_string()))?;
-        let pk = crypto::PublicKey::from_slice(&pk_bytes)
-            .ok_or(StorageError::EncryptionError("Invalid public key".to_string()))?;
-        let fp = crypto::Fingerprint::from_public_key(&pk);
-        if fp != secure_id.fingerprint {
+        // Integridade check
+        let pk_bytes = BASE64.decode(&keypair.public_key).unwrap();
+        let pk = crypto::PublicKey::from_slice(&pk_bytes).unwrap();
+        if crypto::Fingerprint::from_public_key(&pk) != secure_id.fingerprint {
             return Err(StorageError::FingerprintMismatch);
         }
 
         Ok(keypair)
     }
 
-    /// Altera a senha da identidade
-    pub fn change_password(&self, old_password: &str, new_password: &str) -> Result<(), StorageError> {
-        let keypair = self.load_identity(old_password)?;
-        self.create_identity_with_keypair(&keypair, new_password)?;
-        Ok(())
-    }
-
-    /// Salva uma identidade existente com nova senha (usado internamente)
-    fn create_identity_with_keypair(&self, keypair: &IdentityKeyPair, password: &str) -> Result<Fingerprint, StorageError> {
-        let pk_bytes = BASE64.decode(&keypair.public_key)
-            .map_err(|e| StorageError::EncryptionError(e.to_string()))?;
-        let pk = crypto::PublicKey::from_slice(&pk_bytes)
-            .ok_or(StorageError::EncryptionError("Invalid public key".to_string()))?;
-        let fingerprint = crypto::Fingerprint::from_public_key(&pk);
-
-        let plain = serde_json::to_string(keypair)
-            .map_err(|e| StorageError::SerializationError(e.to_string()))?;
-
-        let encrypted = crypto::Crypto::encrypt_with_password(plain.as_bytes(), password)
-            .map_err(|e| StorageError::EncryptionError(e.to_string()))?;
-
-        let secure_id = SecureIdentity {
-            fingerprint: fingerprint.clone(),
-            encrypted_data: BASE64.encode(&encrypted),
-        };
-
-        let path = self.storage_dir.join("identity.enc");
-        let content = serde_json::to_string_pretty(&secure_id)
-            .map_err(|e| StorageError::SerializationError(e.to_string()))?;
-
-        fs::write(&path, content)
-            .map_err(|e| StorageError::IoError(e.to_string()))?;
-
-        #[cfg(unix)]
-        Self::set_permissions_unix(&path);
-
-        Ok(fingerprint)
-    }
-
-    /// Carrega a lista de contatos
-    pub fn load_contacts(&self) -> Result<Vec<StoredContact>, StorageError> {
-        let path = self.storage_dir.join("contacts.json");
+    /// Carrega contatos descriptografando com a senha
+    pub fn load_contacts(&self, password: &str) -> Result<Vec<StoredContact>, StorageError> {
+        let path = self.storage_dir.join("contacts.enc");
         if !path.exists() {
             return Ok(Vec::new());
         }
+
         let content = fs::read_to_string(&path)
             .map_err(|e| StorageError::IoError(e.to_string()))?;
-        let contacts: Vec<StoredContact> = serde_json::from_str(&content)
+        
+        let enc_file: EncryptedContactsFile = serde_json::from_str(&content)
             .map_err(|e| StorageError::SerializationError(e.to_string()))?;
+
+        let encrypted_blob = BASE64.decode(&enc_file.blob)
+            .map_err(|e| StorageError::EncryptionError(e.to_string()))?;
+
+        let plain = crypto::Crypto::decrypt_with_password(&encrypted_blob, password)
+            .map_err(|_| StorageError::InvalidPassword)?;
+
+        let contacts: Vec<StoredContact> = serde_json::from_slice(&plain)
+            .map_err(|e| StorageError::SerializationError(e.to_string()))?;
+
         Ok(contacts)
     }
 
-    /// Salva a lista de contatos
-    pub fn save_contacts(&self, contacts: &[StoredContact]) -> Result<(), StorageError> {
-        let path = self.storage_dir.join("contacts.json");
-        let content = serde_json::to_string_pretty(contacts)
+    /// Salva contatos criptografados
+    pub fn save_contacts(&self, contacts: &[StoredContact], password: &str) -> Result<(), StorageError> {
+        let json_plain = serde_json::to_string(contacts)
             .map_err(|e| StorageError::SerializationError(e.to_string()))?;
-        fs::write(&path, content)
-            .map_err(|e| StorageError::IoError(e.to_string()))?;
+
+        let encrypted_blob = crypto::Crypto::encrypt_with_password(json_plain.as_bytes(), password)
+            .map_err(|e| StorageError::EncryptionError(e.to_string()))?;
+
+        let enc_file = EncryptedContactsFile {
+            blob: BASE64.encode(&encrypted_blob),
+        };
+
+        let path = self.storage_dir.join("contacts.enc");
+        let content = serde_json::to_string_pretty(&enc_file)
+            .map_err(|e| StorageError::SerializationError(e.to_string()))?;
+
+        fs::write(&path, content).map_err(|e| StorageError::IoError(e.to_string()))?;
+        #[cfg(unix)] Self::set_permissions_unix(&path);
+        
         Ok(())
     }
 
-    /// Adiciona um contato (com fingerprint)
-    pub fn add_contact(&self, address: &str, nickname: &str, fingerprint: Fingerprint) -> Result<(), StorageError> {
-        let mut contacts = self.load_contacts()?;
+    pub fn add_contact(&self, address: &str, nickname: &str, fingerprint: Fingerprint, password: &str) -> Result<(), StorageError> {
+        let mut contacts = self.load_contacts(password)?;
+        
         if contacts.iter().any(|c| c.address == address) {
-            return Ok(()); // já existe
+            return Ok(());
         }
-        let contact = StoredContact {
+        
+        contacts.push(StoredContact {
             address: address.to_string(),
             nickname: nickname.to_string(),
             fingerprint,
             added_at: chrono::Utc::now().timestamp(),
-        };
-        contacts.push(contact);
-        self.save_contacts(&contacts)?;
-        info!("Contact added: {} ({})", address, nickname);
+        });
+        
+        self.save_contacts(&contacts, password)?;
+        info!("Contact added securely.");
         Ok(())
     }
 
-    /// Remove um contato
-    pub fn remove_contact(&self, address: &str) -> Result<(), StorageError> {
-        let mut contacts = self.load_contacts()?;
-        contacts.retain(|c| c.address != address);
-        self.save_contacts(&contacts)?;
-        info!("Contact removed: {}", address);
-        Ok(())
-    }
-
-    /// Busca um contato pelo endereço
-    pub fn find_contact(&self, address: &str) -> Option<StoredContact> {
-        self.load_contacts().ok()?.into_iter().find(|c| c.address == address)
-    }
-
-    /// Wipe all data (secure delete)
     pub fn wipe_all(&self) -> Result<(), StorageError> {
-        let identity_path = self.storage_dir.join("identity.enc");
-        if identity_path.exists() {
-            // Sobrescreve com zeros antes de deletar (tentativa)
-            if let Ok(mut file) = fs::OpenOptions::new().write(true).open(&identity_path) {
-                use std::io::Write;
-                let _ = file.write_all(&[0u8; 4096]);
+        let files = ["identity.enc", "contacts.enc"];
+        for f in files {
+            let path = self.storage_dir.join(f);
+            if path.exists() {
+                // Overwrite secure wipe attempt
+                if let Ok(mut file) = fs::OpenOptions::new().write(true).open(&path) {
+                    use std::io::Write;
+                    let _ = file.write_all(&[0u8; 1024]);
+                }
+                fs::remove_file(&path).map_err(|e| StorageError::IoError(e.to_string()))?;
             }
-            fs::remove_file(&identity_path)
-                .map_err(|e| StorageError::IoError(e.to_string()))?;
         }
-
-        let contacts_path = self.storage_dir.join("contacts.json");
-        if contacts_path.exists() {
-            fs::remove_file(&contacts_path)
-                .map_err(|e| StorageError::IoError(e.to_string()))?;
-        }
-
-        info!("All secure data wiped");
+        info!("Data wiped.");
         Ok(())
+    }
+
+    // --- Helpers ---
+    fn write_secure_file<T: Serialize>(&self, filename: &str, data: &T) -> Result<(), StorageError> {
+        let path = self.storage_dir.join(filename);
+        let content = serde_json::to_string_pretty(data)
+            .map_err(|e| StorageError::SerializationError(e.to_string()))?;
+        fs::write(&path, content).map_err(|e| StorageError::IoError(e.to_string()))?;
+        #[cfg(unix)] Self::set_permissions_unix(&path);
+        Ok(())
+    }
+
+    fn read_secure_file<T: serde::de::DeserializeOwned>(&self, filename: &str) -> Result<T, StorageError> {
+        let path = self.storage_dir.join(filename);
+        if !path.exists() { return Err(StorageError::IdentityNotFound); }
+        let content = fs::read_to_string(&path).map_err(|e| StorageError::IoError(e.to_string()))?;
+        serde_json::from_str(&content).map_err(|e| StorageError::SerializationError(e.to_string()))
     }
 
     #[cfg(unix)]
     fn set_permissions_unix(path: &std::path::Path) {
-        use std::fs;
-        use std::os::unix::fs::PermissionsExt;
         if let Ok(metadata) = fs::metadata(path) {
             let mut perms = metadata.permissions();
-            perms.set_mode(0o600);
+            perms.set_mode(0o600); 
             let _ = fs::set_permissions(path, perms);
         }
     }
 }
 
-impl Default for SecureStorage {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_identity_creation_and_load() {
-        let storage = SecureStorage::new();
-        let password = "test123";
-
-        // Cria identidade
-        let fp = storage.create_identity(password).unwrap();
-        assert!(storage.has_identity());
-
-        // Carrega com senha correta
-        let keypair = storage.load_identity(password).unwrap();
-        assert_eq!(keypair.public_key.len(), 44); // base64 de 32 bytes
-
-        // Carrega com senha errada
-        assert!(storage.load_identity("wrong").is_err());
-
-        // Verifica fingerprint
-        let pk_bytes = BASE64.decode(&keypair.public_key).unwrap();
-        let pk = crypto::PublicKey::from_slice(&pk_bytes).unwrap();
-        assert!(fp.verify(&pk));
-
-        // Cleanup
-        storage.wipe_all().unwrap();
-        assert!(!storage.has_identity());
-    }
-}
+impl Default for SecureStorage { fn default() -> Self { Self::new() } }

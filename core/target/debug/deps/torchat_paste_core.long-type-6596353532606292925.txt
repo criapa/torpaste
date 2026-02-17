@@ -1,1 +1,0 @@
-Result<(Arc<tor_hsservice::RunningOnionService>, impl futures::Stream<Item = tor_hsservice::req::RendRequest>), arti_client::Error>

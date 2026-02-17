@@ -1,0 +1,11 @@
+/home/yuki/Projetos/Messenger/torchat_paste/core/target/debug/deps/futures_rustls-3b5879fa59eb3537.d: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/client.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/common/mod.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/common/handshake.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/server.rs
+
+/home/yuki/Projetos/Messenger/torchat_paste/core/target/debug/deps/libfutures_rustls-3b5879fa59eb3537.rlib: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/client.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/common/mod.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/common/handshake.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/server.rs
+
+/home/yuki/Projetos/Messenger/torchat_paste/core/target/debug/deps/libfutures_rustls-3b5879fa59eb3537.rmeta: /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/lib.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/client.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/common/mod.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/common/handshake.rs /home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/server.rs
+
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/lib.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/client.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/common/mod.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/common/handshake.rs:
+/home/yuki/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/futures-rustls-0.26.0/src/server.rs:

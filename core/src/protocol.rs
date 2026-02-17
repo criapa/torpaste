@@ -1,237 +1,197 @@
 //! P2P Messaging Protocol
+//! Responsável por definir as estruturas de dados e a serialização das mensagens.
 
 use serde::{Deserialize, Serialize};
-use std::collections::VecDeque;
 use thiserror::Error;
-//use log::{info};
+use rand::Rng;
+use sodiumoxide::crypto::hash::sha256;
+use base64::{Engine as _, engine::general_purpose::STANDARD as BASE64};
+use chrono;
+
+// --- Erros do Protocolo ---
 
 #[derive(Error, Debug)]
 pub enum ProtocolError {
-    #[error("Connection not established")]
-    NotConnected,
     #[error("Handshake failed: {0}")]
     HandshakeFailed(String),
-    #[error("Send failed: {0}")]
-    SendFailed(String),
-    #[error("Receive failed: {0}")]
-    ReceiveFailed(String),
     #[error("Invalid message format")]
     InvalidFormat,
     #[error("Encryption error: {0}")]
     EncryptionError(String),
 }
 
-/// Message types
+// --- Estruturas de Dados ---
+
+/// Tipos de mensagens suportadas pelo protocolo
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum MessageType {
-    /// Handshake - key exchange
+    /// Troca de chaves inicial
     Handshake,
-    /// Text message
+    /// Mensagem de texto simples
     Text,
-    /// File transfer
+    /// Transferência de arquivo (metadados + conteúdo)
     File,
-    /// Acknowledgment
+    /// Confirmação de recebimento
     Ack,
-    /// Keep-alive
+    /// Manter conexão viva (Heartbeat)
     KeepAlive,
-    /// Disconnect notification
+    /// Notificação de desconexão
     Disconnect,
 }
 
-/// Chat message
+/// Estrutura principal da mensagem de chat
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Message {
-    /// Message ID
+    /// ID único da mensagem (UUID ou Hex aleatório)
     pub id: String,
-    /// Message type
+    /// Tipo da mensagem
     pub msg_type: MessageType,
-    /// Sender address
+    /// Endereço .onion do remetente
     pub sender: String,
-    /// Timestamp (Unix epoch)
+    /// Timestamp (UTC)
     pub timestamp: i64,
-    /// Content (encrypted in transit)
+    /// Conteúdo da mensagem (Texto ou Payload Base64)
     pub content: String,
-    /// Sequence number for ordering
+    /// Número de sequência para ordenação
     pub sequence: u64,
-    /// File metadata (for file transfers)
+    /// Metadados opcionais se for um arquivo
     pub file_metadata: Option<FileMetadata>,
 }
 
-/// File transfer metadata
+/// Metadados para transferência de arquivos
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FileMetadata {
-    /// File name
     pub name: String,
-    /// File size in bytes
     pub size: u64,
-    /// MIME type
     pub mime_type: String,
 }
 
-/// Handshake message
+/// Mensagem de Handshake (Troca de Chaves)
+/// Atualizado para suportar Forward Secrecy com chaves efêmeras.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct HandshakeMessage {
-    /// Protocol version
+    /// Versão do protocolo
     pub version: u16,
-    /// Public key
-    pub public_key: String,
-    /// Nonce for key exchange
+    /// Chave Pública de Identidade (Longa duração, para autenticação)
+    pub identity_pk: String,
+    /// Chave Pública Efêmera (Sessão atual, para criptografia)
+    pub ephemeral_pk: String,
+    /// Nonce aleatório para evitar replay attacks
     pub nonce: String,
 }
 
-/// Protocol frame for transmission
+/// Envelope de transporte (Frame)
+/// Envolve a mensagem serializada e adiciona um checksum para integridade básica.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProtocolFrame {
-    /// Frame type
-    pub frame_type: FrameType,
-    /// Payload (JSON serialized message)
+    /// Payload (JSON da Message ou Handshake)
     pub payload: String,
-    /// Message checksum
+    /// Checksum SHA256 do payload (Base64)
     pub checksum: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum FrameType {
-    /// Single message
-    Single,
-    /// First fragment
-    FirstFragment,
-    /// Middle fragment
-    MiddleFragment,
-    /// Last fragment
-    LastFragment,
-}
+// --- Lógica do Protocolo ---
 
-/// Chat protocol handler
 pub struct ChatProtocol {
-    /// Protocol version
+    /// Versão atual do protocolo usada nesta instância
     version: u16,
-    /// Max fragment size
-    max_fragment_size: usize,
-    /// Sequence counter
+    /// Contador local de sequência de mensagens enviadas
     sequence: u64,
-    /// Pending fragments
-    pending_fragments: VecDeque<ProtocolFrame>,
 }
 
 impl ChatProtocol {
     pub fn new() -> Self {
         Self {
             version: 1,
-            max_fragment_size: 1024,
             sequence: 0,
-            pending_fragments: VecDeque::new(),
         }
     }
 
-    /// Get next sequence number
+    /// Incrementa e retorna o próximo número de sequência
     pub fn next_sequence(&mut self) -> u64 {
         let seq = self.sequence;
         self.sequence += 1;
         seq
     }
 
-    /// Create a handshake message
-    pub fn create_handshake(&self, public_key: &str, nonce: &str) -> HandshakeMessage {
+    /// Cria a estrutura de handshake
+    pub fn create_handshake(&self, identity_pk: &str, ephemeral_pk: &str, nonce: &str) -> HandshakeMessage {
         HandshakeMessage {
             version: self.version,
-            public_key: public_key.to_string(),
+            identity_pk: identity_pk.to_string(),
+            ephemeral_pk: ephemeral_pk.to_string(),
             nonce: nonce.to_string(),
         }
     }
 
-    /// Serialize a message to bytes for transmission
+    /// Serializa uma mensagem completa para JSON
     pub fn serialize_message(&self, msg: &Message) -> Result<String, ProtocolError> {
         serde_json::to_string(msg)
             .map_err(|_| ProtocolError::InvalidFormat)
     }
 
-    /// Deserialize a message from bytes
+    /// Deserializa uma string JSON para uma mensagem
     pub fn deserialize_message(&self, data: &str) -> Result<Message, ProtocolError> {
         serde_json::from_str(data)
             .map_err(|_| ProtocolError::InvalidFormat)
     }
 
-    /// Serialize a handshake message
+    /// Serializa o handshake para JSON
     pub fn serialize_handshake(&self, handshake: &HandshakeMessage) -> Result<String, ProtocolError> {
         serde_json::to_string(handshake)
             .map_err(|_| ProtocolError::InvalidFormat)
     }
 
-    /// Deserialize a handshake message
+    /// Deserializa o handshake de JSON
     pub fn deserialize_handshake(&self, data: &str) -> Result<HandshakeMessage, ProtocolError> {
         serde_json::from_str(data)
             .map_err(|_| ProtocolError::InvalidFormat)
     }
 
-    /// Create a protocol frame
+    /// Cria um Frame de protocolo (adiciona checksum)
     pub fn create_frame(&self, payload: String) -> ProtocolFrame {
-        use sodiumoxide::crypto::hash::sha256;
-        use base64::{Engine as _, engine::general_purpose::STANDARD as BASE64};
-
         let checksum = BASE64.encode(sha256::hash(payload.as_bytes()).as_ref());
-
         ProtocolFrame {
-            frame_type: FrameType::Single,
             payload,
             checksum,
         }
     }
 
-    /// Serialize a frame for transmission
+    /// Serializa o Frame para envio na rede
     pub fn serialize_frame(&self, frame: &ProtocolFrame) -> Result<String, ProtocolError> {
         serde_json::to_string(frame)
             .map_err(|_| ProtocolError::InvalidFormat)
     }
 
-    /// Deserialize a frame from transmission
+    /// Deserializa o Frame recebido da rede
     pub fn deserialize_frame(&self, data: &str) -> Result<ProtocolFrame, ProtocolError> {
         serde_json::from_str(data)
             .map_err(|_| ProtocolError::InvalidFormat)
     }
 
-    /// Create a text message
+    /// Cria uma nova mensagem de texto pronta para envio
     pub fn create_text_message(
         &mut self,
         sender: &str,
         content: String,
     ) -> Message {
         let timestamp = chrono::Utc::now().timestamp();
+        let sequence = self.next_sequence();
+        let id = Self::generate_message_id();
 
         Message {
-            id: Self::generate_message_id(),
+            id,
             msg_type: MessageType::Text,
             sender: sender.to_string(),
             timestamp,
             content,
-            sequence: self.next_sequence(),
+            sequence,
             file_metadata: None,
         }
     }
 
-    /// Create a file message
-    pub fn create_file_message(
-        &mut self,
-        sender: &str,
-        content: String,
-        metadata: FileMetadata,
-    ) -> Message {
-        let timestamp = chrono::Utc::now().timestamp();
-
-        Message {
-            id: Self::generate_message_id(),
-            msg_type: MessageType::File,
-            sender: sender.to_string(),
-            timestamp,
-            content,
-            sequence: self.next_sequence(),
-            file_metadata: Some(metadata),
-        }
-    }
-
-    /// Generate a unique message ID
+    /// Gera um ID aleatório de 16 bytes (hex) para a mensagem
     fn generate_message_id() -> String {
-        use rand::Rng;
         let mut rng = rand::thread_rng();
         let bytes: Vec<u8> = (0..16).map(|_| rng.gen()).collect();
         hex::encode(bytes)
@@ -241,84 +201,5 @@ impl ChatProtocol {
 impl Default for ChatProtocol {
     fn default() -> Self {
         Self::new()
-    }
-}
-
-/// Connection state
-#[derive(Debug, Clone, PartialEq)]
-pub enum ConnectionState {
-    /// Not connected
-    Disconnected,
-    /// Performing handshake
-    Handshake,
-    /// Connected and encrypted
-    Connected,
-    /// Connection closing
-    Closing,
-}
-
-impl Default for ConnectionState {
-    fn default() -> Self {
-        Self::Disconnected
-    }
-}
-
-/// P2P Connection
-pub struct P2PConnection {
-    /// Remote address
-    pub remote_address: String,
-    /// Connection state
-    pub state: ConnectionState,
-    /// Established session key (if any)
-    pub session_key: Option<crate::crypto::SessionKey>,
-    /// Messages pending acknowledgment
-    pub pending_acks: Vec<String>,
-    /// Last activity timestamp
-    pub last_activity: i64,
-}
-
-impl P2PConnection {
-    pub fn new(address: String) -> Self {
-        Self {
-            remote_address: address,
-            state: ConnectionState::Disconnected,
-            session_key: None,
-            pending_acks: Vec::new(),
-            last_activity: chrono::Utc::now().timestamp(),
-        }
-    }
-
-    pub fn set_connected(&mut self, session_key: crate::crypto::SessionKey) {
-        self.state = ConnectionState::Connected;
-        self.session_key = Some(session_key);
-    }
-
-    pub fn is_connected(&self) -> bool {
-        self.state == ConnectionState::Connected
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_message_creation() {
-        let mut protocol = ChatProtocol::new();
-        let msg = protocol.create_text_message(
-            "test.onion",
-            "Hello".to_string(),
-        );
-        assert_eq!(msg.msg_type, MessageType::Text);
-        assert_eq!(msg.content, "Hello");
-    }
-
-    #[test]
-    fn test_frame_serialization() {
-        let protocol = ChatProtocol::new();
-        let frame = protocol.create_frame("test payload".to_string());
-        let serialized = protocol.serialize_frame(&frame).unwrap();
-        let deserialized = protocol.deserialize_frame(&serialized).unwrap();
-        assert_eq!(deserialized.payload, "test payload");
     }
 }

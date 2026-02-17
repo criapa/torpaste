@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 pub struct AppConfig {
     /// Tor configuration
     pub tor: TorConfig,
-    /// Pastebin configuration
+    /// Pastebin configuration (Legacy/Optional)
     pub pastebin: PastebinConfig,
     /// Protocol configuration
     pub protocol: ProtocolConfig,
@@ -20,9 +20,9 @@ pub struct AppConfig {
 pub struct TorConfig {
     /// SOCKS5 proxy port
     pub socks_port: u16,
-    /// Control port
+    /// Control port (not used with Arti usually, but kept for compatibility)
     pub control_port: u16,
-    /// Use bundled Tor binary
+    /// Use bundled Tor binary (false usually means using Arti library)
     pub use_bundled: bool,
     /// Data directory for Tor
     pub data_dir: String,
